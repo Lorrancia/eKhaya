@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eKhaya — AI-Powered Real Estate Deal Finder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0A0F2C;
+    --teal: #00C4A8;
+    --teal-light: #CCFBF1;
+    --teal-dark: #003d35;
+    --off-white: #F8FAFC;
+    --border: #E2E8F0;
+    --text-primary: #0A0F2C;
+    --text-secondary: #64748B;
+    --text-muted: #94A3B8;
+    --success: #22C55E;
+    --amber: #F59E0B;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--off-white);
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,15,44,0.97);
+    backdrop-filter: blur(12px);
+    padding: 0 32px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .nav-logo { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
+  .nav-logo span { color: var(--teal); }
+
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a {
+    font-size: 13px;
+    color: #94A3B8;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #fff; }
+
+  .nav-cta {
+    background: var(--teal);
+    color: var(--teal-dark);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    padding: 100px 32px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,196,168,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: rgba(0,196,168,0.1);
+    border: 1px solid rgba(0,196,168,0.2);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(48px, 8vw, 80px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 span { color: var(--teal); }
+
+  .hero-tagline {
+    font-size: clamp(16px, 2.5vw, 22px);
+    color: #94A3B8;
+    margin-bottom: 40px;
+    font-weight: 400;
+  }
+
+  .hero-tagline em { color: #fff; font-style: normal; font-weight: 500; }
+
+  .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+
+  .btn-primary {
+    background: var(--teal);
+    color: var(--teal-dark);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: background 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat-num {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--teal);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .hero-stat-label { font-size: 12px; color: #64748B; }
+
+  /* SECTIONS */
+  section { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .section-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 580px;
+    margin-bottom: 48px;
+    line-height: 1.7;
+  }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+  /* PROBLEM */
+  .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+
+  .problem-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .problem-icon {
+    width: 40px; height: 40px;
+    background: rgba(0,196,168,0.08);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--teal);
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+
+  .problem-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .problem-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* DEAL FEED DEMO */
+  .demo-section { background: var(--navy); padding: 80px 32px; }
+  .demo-inner { max-width: 780px; margin: 0 auto; }
+
+  .demo-header { text-align: center; margin-bottom: 40px; }
+  .demo-header .section-eyebrow { color: var(--teal); }
+  .demo-header .section-title { color: #fff; }
+  .demo-header .section-desc { color: #94A3B8; margin: 0 auto 0; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #94A3B8;
+    cursor: pointer;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .tab.active { background: var(--teal); color: var(--teal-dark); border-color: var(--teal); }
+  .tab:hover:not(.active) { border-color: rgba(255,255,255,0.2); color: #fff; }
+
+  .sort-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 16px;
+  }
+  .sort-label { font-size: 12px; color: #64748B; }
+  .sort-select {
+    font-size: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.05);
+    color: #94A3B8;
+    font-family: 'Inter', sans-serif;
+  }
+  .results-count { font-size: 12px; color: #475569; margin-left: auto; }
+
+  .alert-bar {
+    background: rgba(0,196,168,0.08);
+    border: 1px solid rgba(0,196,168,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--teal);
+  }
+
+  /* PROPERTY CARDS */
+  .deal-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .deal-card:hover { border-color: rgba(0,196,168,0.3); transform: translateY(-1px); }
+
+  .card-img {
+    height: 120px;
+    background: linear-gradient(135deg, #111827 0%, #0d1526 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    font-size: 48px;
+    color: rgba(255,255,255,0.08);
+  }
+
+  .badge-score {
+    position: absolute; top: 10px; left: 10px;
+    background: var(--teal); color: var(--teal-dark);
+    font-size: 12px; font-weight: 600;
+    padding: 4px 10px; border-radius: 20px;
+  }
+
+  .badge-strategy {
+    position: absolute; top: 10px; right: 10px;
+    font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 20px;
+  }
+
+  .badge-cashflow { background: rgba(34,197,94,0.15); color: #4ade80; }
+  .badge-flip { background: rgba(245,158,11,0.15); color: #fbbf24; }
+  .badge-undervalued { background: rgba(55,138,221,0.15); color: #60a5fa; }
+
+  .card-body { padding: 16px; }
+
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .card-address { font-size: 15px; font-weight: 600; color: #fff; }
+  .card-sub { font-size: 12px; color: #64748B; margin-top: 3px; }
+
+  .save-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 6px 9px;
+    color: #64748B;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+  .save-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+  .price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+  .price { font-size: 22px; font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace; }
+  .discount { font-size: 12px; color: #4ade80; background: rgba(34,197,94,0.1); padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  .metric { background: rgba(255,255,255,0.04); border-radius: 8px; padding: 8px 10px; }
+  .metric-label { font-size: 10px; color: #475569; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .metric-value { font-size: 13px; font-weight: 600; color: #fff; font-family: 'JetBrains Mono', monospace; }
+
+  .neighborhood { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #64748B; margin-bottom: 12px; }
+  .trend-up { color: #4ade80; }
+
+  .card-actions { display: flex; gap: 8px; }
+  .btn-analyze {
+    flex: 1; background: var(--teal); color: var(--teal-dark);
+    border: none; border-radius: 8px; padding: 10px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: opacity 0.2s;
+  }
+  .btn-analyze:hover { opacity: 0.85; }
+  .btn-listing {
+    flex: 1; background: transparent; color: #94A3B8;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px;
+    font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s;
+  }
+  .btn-listing:hover { border-color: rgba(255,255,255,0.2); color: #fff; }
+
+  /* SCORING MODEL */
+  .scoring-section { background: #fff; padding: 80px 32px; }
+  .scoring-inner { max-width: 900px; margin: 0 auto; }
+
+  .mode-tabs { display: flex; gap: 8px; margin-bottom: 32px; }
+  .mode-btn {
+    flex: 1; padding: 12px; border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    background: transparent; color: var(--text-secondary);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .mode-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+  .mode-desc {
+    font-size: 14px; color: var(--text-secondary);
+    background: var(--off-white); border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 24px; line-height: 1.6;
+  }
+
+  .signal-row { margin-bottom: 18px; }
+  .signal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .signal-name { font-size: 14px; font-weight: 500; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+  .signal-pts { font-size: 13px; font-weight: 600; color: var(--teal); font-family: 'JetBrains Mono', monospace; }
+  .signal-desc-text { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+  .bar-track { height: 6px; background: var(--off-white); border-radius: 3px; overflow: hidden; border: 1px solid var(--border); }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+
+  .insight-box {
+    margin-top: 24px; padding: 16px 18px;
+    border-radius: 10px; border: 1px solid var(--border);
+    background: var(--off-white);
+  }
+  .insight-title { font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .insight-text { font-size: 14px; color: var(--text-primary); line-height: 1.6; }
+
+  /* PRICING */
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 48px; }
+
+  .pricing-card {
+    border-radius: 14px; padding: 28px;
+    border: 1px solid var(--border);
+    background: #fff;
+    position: relative;
+  }
+
+  .pricing-card.featured {
+    background: var(--navy);
+    border-color: var(--teal);
+  }
+
+  .tier-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px; }
+  .featured .tier-label { color: var(--teal); }
+
+  .featured-tag {
+    display: inline-block;
+    background: var(--teal); color: var(--teal-dark);
+    font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 20px; margin-left: 8px;
+  }
+
+  .tier-price { font-size: 36px; font-weight: 700; color: var(--navy); line-height: 1; margin-bottom: 4px; }
+  .featured .tier-price { color: #fff; }
+  .tier-period { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+
+  .tier-features { list-style: none; font-size: 14px; color: var(--text-secondary); }
+  .featured .tier-features { color: #94A3B8; }
+  .tier-features li { padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .featured .tier-features li { border-color: rgba(255,255,255,0.06); }
+  .tier-features li:last-child { border-bottom: none; }
+  .tier-features li::before { content: "✓"; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy);
+    padding: 48px 32px 32px;
+    text-align: center;
+  }
+
+  .footer-logo { font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .footer-logo span { color: var(--teal); }
+  .footer-tagline { font-size: 14px; color: #475569; margin-bottom: 32px; }
+  .footer-note { font-size: 12px; color: #334155; }
+  .footer-note a { color: var(--teal); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">e<span>K</span>haya</div>
+  <div class="nav-links">
+    <a href="#product">Product</a>
+    <a href="#scoring">How it scores</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <a href="#pricing" class="nav-cta">Get early access</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">AI-Powered Real Estate Deal Finder</div>
+  <h1>e<span>K</span>haya</h1>
+  <p class="hero-tagline"><em>"Stop searching for deals.</em> Start receiving them."</p>
+  <div class="hero-ctas">
+    <a href="#product" class="btn-primary">See the deal feed</a>
+    <a href="#scoring" class="btn-secondary">How scoring works</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-num">3</div>
+      <div class="hero-stat-label">Deal strategies</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">5</div>
+      <div class="hero-stat-label">AI scoring signals</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">AZ+CA</div>
+      <div class="hero-stat-label">Launch markets</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">0</div>
+      <div class="hero-stat-label">Spreadsheets needed</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="section-eyebrow">The problem</div>
+  <div class="section-title">Investors are drowning in listings, missing the best deals</div>
+  <div class="section-desc">Real estate investors cobble together 3–6 tools and still rely on gut feel and manual math to evaluate opportunities.</div>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="problem-icon"><i class="ti ti-bell-off"></i></div>
+      <h3>Missing deals</h3>
+      <p>Good deals in Phoenix and LA go fast — sometimes within hours. Investors not checking constantly lose out every week.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon"><i class="ti ti-map-pin-question"></i></div>
+      <h3>No neighborhood signal</h3>
+      <p>No tool tells you if a neighborhood is up-and-coming or declining. Investors rely on expensive local knowledge.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon"><i class="ti ti-list-search"></i></div>
+      <h3>Listing overload</h3>
+      <p>Search returns hundreds of results with no intelligent ranking. Hours wasted filtering manually with no signal for deal quality.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon"><i class="ti ti-table"></i></div>
+      <h3>Manual financial math</h3>
+      <p>Cap rates, cash-on-cash, ARV calculations — all in separate spreadsheets, completely disconnected from discovery.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DEAL FEED DEMO -->
+<div class="demo-section" id="product">
+  <div class="demo-inner">
+    <div class="demo-header">
+      <div class="section-eyebrow">Live deal feed</div>
+      <div class="section-title" style="color:#fff; margin-bottom:12px">Your best deals, already ranked</div>
+      <div class="section-desc">eKhaya scores every property and serves you a ranked feed — filtered by your strategy, updated in real time.</div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="filterTab(this, 'all')">All deals</button>
+      <button class="tab" onclick="filterTab(this, 'cashflow')">High cash-flow</button>
+      <button class="tab" onclick="filterTab(this, 'flip')">Fix &amp; flip</button>
+      <button class="tab" onclick="filterTab(this, 'undervalued')">Undervalued</button>
+    </div>
+
+    <div class="sort-row">
+      <span class="sort-label">Sort by</span>
+      <select class="sort-select">
+        <option>eKhaya score</option>
+        <option>Cap rate</option>
+        <option>Discount to market</option>
+        <option>Price</option>
+      </select>
+      <span class="results-count" id="results-count">47 deals in Phoenix, AZ</span>
+    </div>
+
+    <div class="alert-bar">
+      <i class="ti ti-bell" style="font-size:16px"></i>
+      <span>2 new deals crossed your score threshold overnight in Phoenix 85032</span>
+    </div>
+
+    <div id="deal-cards">
+      <!-- Card 1 -->
+      <div class="deal-card" data-type="cashflow">
+        <div class="card-img">
+          <i class="ti ti-home-2"></i>
+          <div class="badge-score">Score 91</div>
+          <div class="badge-strategy badge-cashflow">High cash-flow</div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <div>
+              <div class="card-address">2847 E Cactus Rd</div>
+              <div class="card-sub">3 bed · 2 bath · 1,420 sqft · Phoenix, AZ 85032</div>
+            </div>
+            <button class="save-btn"><i class="ti ti-heart"></i></button>
+          </div>
+          <div class="price-row">
+            <span class="price">$285,000</span>
+            <span class="discount">14% below market</span>
+          </div>
+          <div class="metrics">
+            <div class="metric"><div class="metric-label">Cap rate</div><div class="metric-value">7.2%</div></div>
+            <div class="metric"><div class="metric-label">Cash-on-cash</div><div class="metric-value">9.1%</div></div>
+            <div class="metric"><div class="metric-label">Est. rehab</div><div class="metric-value">$18K</div></div>
+            <div class="metric"><div class="metric-label">ARV</div><div class="metric-value">$340K</div></div>
+          </div>
+          <div class="neighborhood">
+            <i class="ti ti-trending-up trend-up"></i>
+            <span class="trend-up">Up-and-coming</span>
+            <span>· Arcadia Lite · Price cut 3× in 45 days</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn-analyze">Analyze deal</button>
+            <button class="btn-listing">View listing</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="deal-card" data-type="flip">
+        <div class="card-img">
+          <i class="ti ti-building"></i>
+          <div class="badge-score">Score 84</div>
+          <div class="badge-strategy badge-flip">Fix &amp; flip</div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <div>
+              <div class="card-address">1103 W Garfield St</div>
+              <div class="card-sub">4 bed · 2 bath · 1,680 sqft · Phoenix, AZ 85007</div>
+            </div>
+            <button class="save-btn"><i class="ti ti-heart"></i></button>
+          </div>
+          <div class="price-row">
+            <span class="price">$198,000</span>
+            <span class="discount">22% below market</span>
+          </div>
+          <div class="metrics">
+            <div class="metric"><div class="metric-label">Cap rate</div><div class="metric-value">5.8%</div></div>
+            <div class="metric"><div class="metric-label">Cash-on-cash</div><div class="metric-value">7.4%</div></div>
+            <div class="metric"><div class="metric-label">Est. rehab</div><div class="metric-value">$42K</div></div>
+            <div class="metric"><div class="metric-label">ARV</div><div class="metric-value">$310K</div></div>
+          </div>
+          <div class="neighborhood">
+            <i class="ti ti-trending-up trend-up"></i>
+            <span class="trend-up">Emerging</span>
+            <span>· Downtown Phoenix · Distressed · On market 67 days</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn-analyze">Analyze deal</button>
+            <button class="btn-listing">View listing</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="deal-card" data-type="undervalued">
+        <div class="card-img">
+          <i class="ti ti-home"></i>
+          <div class="badge-score">Score 78</div>
+          <div class="badge-strategy badge-undervalued">Undervalued</div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <div>
+              <div class="card-address">5521 N 35th Ave</div>
+              <div class="card-sub">3 bed · 1 bath · 1,120 sqft · Phoenix, AZ 85017</div>
+            </div>
+            <button class="save-btn"><i class="ti ti-heart"></i></button>
+          </div>
+          <div class="price-row">
+            <span class="price">$162,500</span>
+            <span class="discount">18% below market</span>
+          </div>
+          <div class="metrics">
+            <div class="metric"><div class="metric-label">Cap rate</div><div class="metric-value">6.4%</div></div>
+            <div class="metric"><div class="metric-label">Cash-on-cash</div><div class="metric-value">8.2%</div></div>
+            <div class="metric"><div class="metric-label">Est. rehab</div><div class="metric-value">$12K</div></div>
+            <div class="metric"><div class="metric-label">ARV</div><div class="metric-value">$215K</div></div>
+          </div>
+          <div class="neighborhood">
+            <i class="ti ti-minus" style="color:#64748B"></i>
+            <span>Stable · West Phoenix · Foreclosure · Price cut 2× in 30 days</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn-analyze">Analyze deal</button>
+            <button class="btn-listing">View listing</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCORING MODEL -->
+<div class="scoring-section" id="scoring">
+  <div class="scoring-inner">
+    <div class="section-eyebrow">AI scoring model</div>
+    <div class="section-title">5 signals. Weights that shift by strategy.</div>
+    <div class="section-desc">eKhaya doesn't use a fixed algorithm. The score weights shift depending on your investment strategy — because a great flip and a great rental are fundamentally different deals.</div>
+
+    <div class="mode-tabs">
+      <button class="mode-btn active" onclick="setMode('cashflow')">High cash-flow</button>
+      <button class="mode-btn" onclick="setMode('flip')">Fix &amp; flip</button>
+      <button class="mode-btn" onclick="setMode('undervalued')">Undervalued</button>
+    </div>
+
+    <div class="mode-desc" id="mode-desc">Optimized for buy-and-hold investors. Rental yield and neighborhood trajectory are weighted highest — a property that cash-flows well in a stable or improving area is the core target.</div>
+
+    <div id="signals"></div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-top:1px solid var(--border);margin-top:8px">
+      <span style="font-size:13px;color:var(--text-secondary)">Total weight</span>
+      <span style="font-size:16px;font-weight:600;font-family:'JetBrains Mono',monospace">100 pts</span>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Why these weights</div>
+      <div class="insight-text" id="insight-text">Rental yield drives long-term returns, so it leads. Neighborhood trajectory matters for appreciation and tenant quality. Price discount is still important but secondary — a slightly above-market property in a great location can still cash-flow well.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<section id="pricing" style="background:var(--off-white);max-width:100%;padding:80px 32px">
+  <div style="max-width:900px;margin:0 auto">
+    <div class="section-eyebrow" style="text-align:center">Pricing</div>
+    <div class="section-title" style="text-align:center">Start free. Scale as you grow.</div>
+    <div class="section-desc" style="text-align:center;margin:0 auto 0">Three tiers built for every stage of your investing journey.</div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="tier-label">Explorer</div>
+        <div class="tier-price">$29<span style="font-size:16px;font-weight:400;color:var(--text-muted)">/mo</span></div>
+        <div class="tier-period">For casual investors getting started</div>
+        <ul class="tier-features">
+          <li>1 market</li>
+          <li>5 saved deals</li>
+          <li>Weekly deal digest</li>
+          <li>Basic deal analyzer</li>
+        </ul>
+      </div>
+      <div class="pricing-card featured">
+        <div class="tier-label">Investor <span class="featured-tag">Most popular</span></div>
+        <div class="tier-price" style="color:#fff">$79<span style="font-size:16px;font-weight:400;color:#64748B">/mo</span></div>
+        <div class="tier-period" style="color:#64748B">For serious investors doing 1–5 deals/yr</div>
+        <ul class="tier-features">
+          <li>3 markets</li>
+          <li>Unlimited saved deals</li>
+          <li>Real-time alerts</li>
+          <li>Full deal analyzer</li>
+          <li>Investor articles access</li>
+        </ul>
+      </div>
+      <div class="pricing-card">
+        <div class="tier-label">Portfolio</div>
+        <div class="tier-price">$199<span style="font-size:16px;font-weight:400;color:var(--text-muted)">/mo</span></div>
+        <div class="tier-period">For small funds doing 10+ deals/yr</div>
+        <ul class="tier-features">
+          <li>Nationwide coverage</li>
+          <li>Team seats (3 users)</li>
+          <li>Portfolio tracking</li>
+          <li>API access</li>
+          <li>Priority support</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">e<span>K</span>haya</div>
+  <div class="footer-tagline">"Stop searching for deals. Start receiving them."</div>
+  <div class="footer-note">
+    Built as part of the AI Fluency Course · 4D Framework (Description · Discernment · Delegation · Diligence)<br>
+    <a href="https://github.com">View on GitHub</a>
+  </div>
+</footer>
+
+<script>
+const modes = {
+  cashflow: {
+    desc: "Optimized for buy-and-hold investors. Rental yield and neighborhood trajectory are weighted highest — a property that cash-flows well in a stable or improving area is the core target.",
+    insight: "Rental yield drives long-term returns, so it leads. Neighborhood trajectory matters for appreciation and tenant quality. Price discount is still important but secondary — a slightly above-market property in a great location can still cash-flow well.",
+    color: "#00C4A8",
+    signals: [
+      { name: "Projected rental yield", icon: "ti-chart-line", weight: 30, desc: "Cap rate + cash-on-cash return based on estimated rents" },
+      { name: "Neighborhood trajectory", icon: "ti-trending-up", weight: 25, desc: "Up-and-coming vs. declining trend based on permit data, sales velocity, and demographics" },
+      { name: "Price vs. market value", icon: "ti-tag", weight: 20, desc: "Discount depth vs. AVM and recent comps" },
+      { name: "Price reduction history", icon: "ti-arrow-down", weight: 15, desc: "Number of cuts and days on market — signals motivated seller" },
+      { name: "Rehab cost vs. ARV", icon: "ti-tools", weight: 10, desc: "Estimated renovation cost relative to after-repair value" },
+    ]
+  },
+  flip: {
+    desc: "Optimized for fix-and-flip investors. Rehab cost vs. ARV becomes the dominant signal — the spread between purchase price, rehab cost, and resale value is the whole game.",
+    insight: "The flip profit formula: ARV minus purchase price minus rehab cost equals your margin. So rehab vs. ARV leads heavily. Price discount amplifies the margin. Neighborhood trajectory matters for resale speed. Rental yield is nearly irrelevant for a flip.",
+    color: "#F59E0B",
+    signals: [
+      { name: "Rehab cost vs. ARV", icon: "ti-tools", weight: 35, desc: "Flip profit margin: ARV minus purchase price minus estimated rehab" },
+      { name: "Price vs. market value", icon: "ti-tag", weight: 28, desc: "Deeper discount = more room for rehab budget and profit margin" },
+      { name: "Neighborhood trajectory", icon: "ti-trending-up", weight: 20, desc: "Improving neighborhoods sell faster and at higher ARV" },
+      { name: "Price reduction history", icon: "ti-arrow-down", weight: 12, desc: "Motivated sellers are more negotiable on price" },
+      { name: "Projected rental yield", icon: "ti-chart-line", weight: 5, desc: "Low weight — rental income is not the exit strategy for a flip" },
+    ]
+  },
+  undervalued: {
+    desc: "Optimized for value investors and BRRRR strategy. Price discount vs. market value leads — the goal is finding properties priced significantly below what they're worth.",
+    insight: "The undervalued signal is about information asymmetry — finding what the market has mispriced. Deep discount leads. Neighborhood trajectory is critical for long-term hold value. Price reduction history signals urgency and potential for further negotiation.",
+    color: "#378ADD",
+    signals: [
+      { name: "Price vs. market value", icon: "ti-tag", weight: 35, desc: "Core signal — how deeply discounted vs. AVM and recent comps" },
+      { name: "Neighborhood trajectory", icon: "ti-trending-up", weight: 25, desc: "Up-and-coming areas amplify the value of buying below market today" },
+      { name: "Price reduction history", icon: "ti-arrow-down", weight: 20, desc: "Multiple cuts signal distress and further negotiation room" },
+      { name: "Projected rental yield", icon: "ti-chart-line", weight: 12, desc: "Secondary — helps if holding as a rental after purchase" },
+      { name: "Rehab cost vs. ARV", icon: "ti-tools", weight: 8, desc: "Relevant if the discount is driven by deferred maintenance" },
+    ]
+  }
+};
+
+function setMode(mode) {
+  document.querySelectorAll('.mode-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['cashflow','flip','undervalued'][i] === mode);
+  });
+  document.getElementById('mode-desc').textContent = modes[mode].desc;
+  document.getElementById('insight-text').textContent = modes[mode].insight;
+  const { signals, color } = modes[mode];
+  document.getElementById('signals').innerHTML = signals.map(s => `
+    <div class="signal-row">
+      <div class="signal-header">
+        <span class="signal-name"><i class="ti ${s.icon}" style="font-size:16px;color:${color}"></i> ${s.name}</span>
+        <span class="signal-pts" style="color:${color}">${s.weight} pts</span>
+      </div>
+      <div class="signal-desc-text">${s.desc}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${s.weight}%;background:${color}"></div></div>
+    </div>
+  `).join('');
+}
+
+function filterTab(btn, type) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.deal-card').forEach(card => {
+    card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
+  });
+  const counts = { all: 47, cashflow: 19, flip: 14, undervalued: 14 };
+  const labels = { all: 'deals', cashflow: 'cash-flow deals', flip: 'flip opportunities', undervalued: 'undervalued listings' };
+  document.getElementById('results-count').textContent = `${counts[type]} ${labels[type]} in Phoenix, AZ`;
+}
+
+setMode('cashflow');
+</script>
+</body>
+</html>
