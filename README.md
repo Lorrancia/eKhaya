@@ -1,4 +1,4 @@
-# eKhaya — AI-Powered Real Estate Deal Finder
+# eKhaya - AI-Powered Real Estate Deal Finder
 
 > *"Stop searching for deals. Start receiving them."*
 
@@ -6,7 +6,7 @@ eKhaya is an AI-powered real estate deal finder for property investors. It aggre
 
 ## Live demo
 
-👉 **[View live site](https://yourusername.github.io/ekhaya)**
+👉 **[View live site]([https://Lorrancia.github.io/ekhaya])**
 
 ## What's in this repo
 
