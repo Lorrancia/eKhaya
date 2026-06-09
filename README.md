@@ -2,7 +2,7 @@
 
 > *"Stop searching for deals. Start receiving them."*
 
-eKhaya is an AI-powered real estate deal finder for property investors. It aggregates listing data across three deal types — undervalued properties, high cash-flow rentals, and fix-and-flip opportunities — and scores each property using a proprietary AI model.
+eKhaya is an AI-powered real estate deal finder for property investors. It aggregates listing data across three deal types - undervalued properties, high cash-flow rentals, and fix-and-flip opportunities — and scores each property using a proprietary AI model.
 
 ## Live demo
 
