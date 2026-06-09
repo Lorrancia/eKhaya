@@ -1,8 +1,8 @@
 # eKhaya - AI-Powered Real Estate Deal Finder
 
-> *"Stop searching for deals. Start receiving them."*
+> *Stop searching for deals. Start receiving them.*
 
-eKhaya is an AI-powered real estate deal finder for property investors. It aggregates listing data across three deal types - undervalued properties, high cash-flow rentals, and fix-and-flip opportunities — and scores each property using a proprietary AI model.
+eKhaya is an AI-powered real estate deal finder for property investors. It aggregates listing data across three deal types - undervalued properties, high cash-flow rentals, and fix-and-flip opportunities - and scores each property using a proprietary AI model.
 
 ## Live demo
 
@@ -18,11 +18,11 @@ ekhaya/
 
 ## Features demonstrated
 
-- **AI-ranked deal feed** — scored property cards with 5-second gut-check design
-- **Strategy filtering** — High cash-flow / Fix & flip / Undervalued tabs
-- **Interactive scoring model** — shift weights by strategy mode
-- **Tiered pricing** — Explorer / Investor / Portfolio
-- **Real-time alert bar** — score threshold notifications
+- **AI-ranked deal feed** - scored property cards with 5-second gut-check design
+- **Strategy filtering** - High cash-flow / Fix & flip / Undervalued tabs
+- **Interactive scoring model** - shift weights by strategy mode
+- **Tiered pricing** - Explorer / Investor / Portfolio
+- **Real-time alert bar** - score threshold notifications
 
 ## The AI scoring model
 
@@ -38,7 +38,7 @@ eKhaya's proprietary model outputs a 0–100 deal score using 5 signals with **s
 
 ## Launch markets
 
-Arizona & California — Phoenix, Tucson, LA, OC, Inland Empire, Bay Area, Sacramento
+Arizona & California - Phoenix, Tucson, LA, OC, Inland Empire, Bay Area, Sacramento
 
 ## Business model
 
@@ -50,7 +50,7 @@ Arizona & California — Phoenix, Tucson, LA, OC, Inland Empire, Bay Area, Sacra
 
 ## Built with
 
-- Vanilla HTML, CSS, JavaScript — no frameworks, no dependencies
+- Vanilla HTML, CSS, JavaScript - no frameworks, no dependencies
 - Inter + JetBrains Mono typefaces
 - Tabler Icons
 
@@ -62,4 +62,4 @@ The name *eKhaya* comes from the Zulu/Xhosa word for "home."
 
 ---
 
-*© 2026 eKhaya — Concept & Portfolio Piece*
+*© 2026 eKhaya — Concept*
